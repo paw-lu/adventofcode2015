@@ -13,13 +13,13 @@ func main() {
 	file, _ := os.Open("input.txt")
 	scanner := bufio.NewScanner(file)
 
-	paperNeeded := 0
+	ribbonNeeded := 0
 	for scanner.Scan() {
 		dims := parseToDimensions(scanner.Text())
-		paperNeeded += dims.getRequiredArea()
+		ribbonNeeded += dims.getRequiredRibbon()
 	}
 
-	fmt.Println(paperNeeded)
+	fmt.Println(ribbonNeeded)
 }
 
 type Dimensions struct {
@@ -28,15 +28,15 @@ type Dimensions struct {
 	h int
 }
 
-func (d Dimensions) getRequiredArea() int {
-	basicArea := 2*d.l*d.w + 2*d.w*d.h + 2*d.h*d.l
-	extraArea := d.getSmallestArea()
+func (d Dimensions) getRequiredRibbon() int {
+	basicRibbon := d.getSmallestPerimeter()
+	extraRibbon := d.l * d.w * d.h
 
-	return basicArea + extraArea
+	return basicRibbon + extraRibbon
 }
 
-func (d Dimensions) getSmallestArea() int {
-	ds := []int{d.l * d.w, d.w * d.h, d.h * d.l}
+func (d Dimensions) getSmallestPerimeter() int {
+	ds := []int{2*d.l + 2*d.w, 2*d.w + 2*d.h, 2*d.h + 2*d.l}
 	sort.Ints(ds)
 
 	return ds[0]
