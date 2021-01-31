@@ -3,15 +3,11 @@ package main
 import "fmt"
 import "io/ioutil"
 
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
 func main() {
 	data, err := ioutil.ReadFile("input.txt")
-	check(err)
+	if err != nil {
+		panic(err)
+	}
 
 	input := string(data)
 	fmt.Println(part1(input))
