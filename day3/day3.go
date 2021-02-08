@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
-import "io/ioutil"
+import (
+	"fmt"
+	"io/ioutil"
+)
 
 func main() {
 	data, err := ioutil.ReadFile("input.txt")
