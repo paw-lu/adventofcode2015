@@ -43,12 +43,9 @@ func containsThreeVowels(r []rune) bool {
 }
 
 func hasTwiceInRow(r []rune) bool {
-	var currentLetter rune
-	for _, nextLetter := range r {
-		if nextLetter == currentLetter {
+	for i := 0; i < len(r)-1; i++ {
+		if r[i] == r[i+1] {
 			return true
-		} else {
-			currentLetter = nextLetter
 		}
 	}
 
@@ -56,28 +53,24 @@ func hasTwiceInRow(r []rune) bool {
 }
 
 func noDisallowedPairs(r []rune) bool {
-	for i, _ := range r {
-		if i < len(r)-1 {
-			switch r[i] {
-			case 'a':
-				if r[i+1] == 'b' {
-					return false
-				}
-			case 'c':
-				if r[i+1] == 'd' {
-					return false
-				}
-			case 'p':
-				if r[i+1] == 'q' {
-					return false
-				}
-			case 'x':
-				if r[i+1] == 'y' {
-					return false
-				}
+	for i := 0; i < len(r)-1; i++ {
+		switch r[i] {
+		case 'a':
+			if r[i+1] == 'b' {
+				return false
 			}
-		} else {
-			return true
+		case 'c':
+			if r[i+1] == 'd' {
+				return false
+			}
+		case 'p':
+			if r[i+1] == 'q' {
+				return false
+			}
+		case 'x':
+			if r[i+1] == 'y' {
+				return false
+			}
 		}
 	}
 	return true
@@ -112,37 +105,25 @@ func containsRepeatPair(r []rune) bool {
 
 	letterPairs := []RunePair{}
 
-	for i, _ := range r {
-		if i < len(r)-1 {
-			currentPair := RunePair{r[i], r[i+1]}
-			// check if current pair has appeared previously
-			for i, previousPair := range letterPairs {
-				// exclude most recently-added pair
-				if (i < len(letterPairs)-1) && (currentPair == previousPair) {
-					return true
-				}
+	for i := 0; i < len(r)-1; i++ {
+		currentPair := RunePair{r[i], r[i+1]}
+		// check if current pair has appeared previously
+		for i, previousPair := range letterPairs {
+			// exclude most recently-added pair
+			if (i < len(letterPairs)-1) && (currentPair == previousPair) {
+				return true
 			}
-			letterPairs = append(letterPairs, currentPair)
-		} else {
-			break
 		}
+		letterPairs = append(letterPairs, currentPair)
 
 	}
 	return false
 }
 
 func containsSkippingLetter(r []rune) bool {
-	currentLetter := r[0]
-
-	for i, _ := range r {
-		if i < len(r)-2 {
-			if currentLetter == r[i+2] {
-				return true
-			} else {
-				currentLetter = r[i+1]
-			}
-		} else {
-			return false
+	for i := 0; i < len(r)-2; i++ {
+		if r[i] == r[i+2] {
+			return true
 		}
 	}
 
