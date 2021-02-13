@@ -30,7 +30,9 @@ func part1(input string) int {
 		circuit[sink] = source
 	}
 
-	return traceSink("a", circuit)
+	wireMap := make(map[string]int)
+
+	return traceSink("a", circuit, wireMap)
 }
 
 func parseConnection(instruction string) (string, Gate) {
@@ -97,27 +99,37 @@ func parseConnection(instruction string) (string, Gate) {
 	return sink, source
 }
 
-func traceSink(sink string, circuit map[string]Gate) int {
-	fmt.Println("tracing wire ", sink)
-
+func traceSink(sink string, circuit map[string]Gate, wireMap map[string]int) int {
 	g := circuit[sink]
+
+	v, ok := wireMap[sink]
+	if ok {
+		return v
+	}
+
+	var wireValue int
 
 	switch g.operator {
 	case "AND":
-		return traceSink(g.source0, circuit) & traceSink(g.source1, circuit)
+		if g.source0 == "1" {
+			wireValue = 1 & traceSink(g.source1, circuit, wireMap)
+		} else {
+			wireValue = traceSink(g.source0, circuit, wireMap) & traceSink(g.source1, circuit, wireMap)
+		}
 	case "OR":
-		return traceSink(g.source0, circuit) | traceSink(g.source1, circuit)
+		wireValue = traceSink(g.source0, circuit, wireMap) | traceSink(g.source1, circuit, wireMap)
 	case "LSHIFT":
-		return traceSink(g.source0, circuit) << g.param
+		wireValue = traceSink(g.source0, circuit, wireMap) << g.param
 	case "RSHIFT":
-		return traceSink(g.source0, circuit) >> g.param
+		wireValue = traceSink(g.source0, circuit, wireMap) >> g.param
 	case "NOT":
-		return ^traceSink(g.source0, circuit)
+		wireValue = ^traceSink(g.source0, circuit, wireMap)
 	case "CONNECT":
-		return traceSink(g.source0, circuit)
+		wireValue = traceSink(g.source0, circuit, wireMap)
 	case "INPUT":
-		return g.param
+		wireValue = g.param
 	}
 
-	return 0
+	wireMap[sink] = wireValue
+	return wireValue
 }
