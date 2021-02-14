@@ -10,6 +10,7 @@ import (
 
 func main() {
 	fmt.Println(part1("input.txt"))
+	fmt.Println(part2("input.txt"))
 }
 
 type Gate struct {
@@ -33,6 +34,26 @@ func part1(input string) int {
 	wireMap := make(map[string]int)
 
 	return traceSink("a", circuit, wireMap)
+}
+
+func part2(input string) int {
+	file, _ := os.Open(input)
+	scanner := bufio.NewScanner(file)
+
+	circuit := make(map[string]Gate)
+
+	for scanner.Scan() {
+		sink, source := parseConnection(scanner.Text())
+		circuit[sink] = source
+	}
+
+	wireMap := make(map[string]int)
+	wireAOverride := traceSink("a", circuit, wireMap)
+
+	revisedWireMap := make(map[string]int)
+	revisedWireMap["b"] = wireAOverride
+
+	return traceSink("a", circuit, revisedWireMap)
 }
 
 func parseConnection(instruction string) (string, Gate) {
