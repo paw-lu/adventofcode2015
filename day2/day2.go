@@ -10,7 +10,12 @@ import (
 )
 
 func main() {
-	file, _ := os.Open("input.txt")
+	fmt.Println(part1("input.txt"))
+	fmt.Println(part2("input.txt"))
+}
+
+func part1(input string) int {
+	file, _ := os.Open(input)
 	scanner := bufio.NewScanner(file)
 
 	paperNeeded := 0
@@ -19,7 +24,20 @@ func main() {
 		paperNeeded += dims.getRequiredArea()
 	}
 
-	fmt.Println(paperNeeded)
+	return paperNeeded
+}
+
+func part2(input string) int {
+	file, _ := os.Open(input)
+	scanner := bufio.NewScanner(file)
+
+	ribbonNeeded := 0
+	for scanner.Scan() {
+		dims := parseToDimensions(scanner.Text())
+		ribbonNeeded += dims.getRequiredRibbon()
+	}
+
+	return ribbonNeeded
 }
 
 type Dimensions struct {
@@ -37,6 +55,20 @@ func (d Dimensions) getRequiredArea() int {
 
 func (d Dimensions) getSmallestArea() int {
 	ds := []int{d.l * d.w, d.w * d.h, d.h * d.l}
+	sort.Ints(ds)
+
+	return ds[0]
+}
+
+func (d Dimensions) getRequiredRibbon() int {
+	basicRibbon := d.getSmallestPerimeter()
+	extraRibbon := d.l * d.w * d.h
+
+	return basicRibbon + extraRibbon
+}
+
+func (d Dimensions) getSmallestPerimeter() int {
+	ds := []int{2*d.l + 2*d.w, 2*d.w + 2*d.h, 2*d.h + 2*d.l}
 	sort.Ints(ds)
 
 	return ds[0]
