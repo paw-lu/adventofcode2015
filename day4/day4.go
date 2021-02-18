@@ -1,20 +1,17 @@
 package main
 
-import "crypto/md5"
-import "encoding/hex"
-import "fmt"
-import "strconv"
+import (
+	"crypto/md5"
+	"encoding/hex"
+	"fmt"
+	"strconv"
+)
 
 func main() {
 	input := "iwrupvqb"
 
 	fmt.Println(part1(input))
 	fmt.Println(part2(input))
-}
-
-func getMd5Hex(input string) string {
-	hash := md5.Sum([]byte(input))
-	return hex.EncodeToString(hash[:])
 }
 
 func part1(input string) int {
@@ -47,4 +44,9 @@ func part2(input string) int {
 	}
 
 	return i
+}
+
+func getMd5Hex(input string) string {
+	hash := md5.Sum([]byte(input))
+	return hex.EncodeToString(hash[:])
 }

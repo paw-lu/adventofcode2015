@@ -1,8 +1,10 @@
 package main
 
-import "fmt"
-import "bufio"
-import "os"
+import (
+	"bufio"
+	"fmt"
+	"os"
+)
 
 func main() {
 	fmt.Println(part1("input.txt"))
@@ -16,6 +18,20 @@ func part1(input string) int {
 	i := 0
 	for scanner.Scan() {
 		if isPartOneNice(scanner.Text()) {
+			i++
+		}
+	}
+
+	return i
+}
+
+func part2(input string) int {
+	file, _ := os.Open("input.txt")
+	scanner := bufio.NewScanner(file)
+
+	i := 0
+	for scanner.Scan() {
+		if isPartTwoNice(scanner.Text()) {
 			i++
 		}
 	}
@@ -74,20 +90,6 @@ func noDisallowedPairs(r []rune) bool {
 		}
 	}
 	return true
-}
-
-func part2(input string) int {
-	file, _ := os.Open("input.txt")
-	scanner := bufio.NewScanner(file)
-
-	i := 0
-	for scanner.Scan() {
-		if isPartTwoNice(scanner.Text()) {
-			i++
-		}
-	}
-
-	return i
 }
 
 func isPartTwoNice(s string) bool {

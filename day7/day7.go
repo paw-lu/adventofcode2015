@@ -13,13 +13,6 @@ func main() {
 	fmt.Println(part2("input.txt"))
 }
 
-type Gate struct {
-	operator string
-	source0  string
-	source1  string // null for RSHIFT/LSHIFT/INPUT
-	param    int    // null for AND/OR
-}
-
 func part1(input string) int {
 	file, _ := os.Open(input)
 	scanner := bufio.NewScanner(file)
@@ -54,6 +47,13 @@ func part2(input string) int {
 	revisedWireMap["b"] = wireAOverride
 
 	return traceSink("a", circuit, revisedWireMap)
+}
+
+type Gate struct {
+	operator string
+	source0  string
+	source1  string // null for RSHIFT/LSHIFT/INPUT
+	param    int    // null for AND/OR
 }
 
 func parseConnection(instruction string) (string, Gate) {

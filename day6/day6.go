@@ -1,10 +1,12 @@
 package main
 
-import "bufio"
-import "fmt"
-import "os"
-import "strings"
-import "strconv"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+)
 
 func main() {
 	fmt.Println(part1("input.txt"))
